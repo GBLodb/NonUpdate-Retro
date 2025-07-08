@@ -1,0 +1,8 @@
+[{
+  "name": "NonUpdate-Retro",
+  "version": "${mod_version}",
+  "mcversion": "1.7.10",
+  "description": "Basically a fork of NonUpdate-Modern, for LWJGL3ify instances.",
+  "authorList": ["GBLodb respect for kappa-maintainer"],
+  "logoFile": "icon.png"
+}]

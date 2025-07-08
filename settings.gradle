@@ -1,0 +1,18 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        maven {
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            url = "https://maven.wagyourtail.xyz/releases"
+        }
+        gradlePluginPortal() {
+            content {
+                excludeGroup("org.apache.logging.log4j")
+            }
+        }
+    }
+}
+
+rootProject.name = 'NonUpdate-Retro'

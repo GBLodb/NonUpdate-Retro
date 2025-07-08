@@ -1,0 +1,91 @@
+plugins {
+    id 'java'
+    id 'xyz.wagyourtail.unimined' version '1.4.1'
+}
+
+group = 'gblodb'
+version = project.property("mod_version")
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_21
+
+repositories {
+    maven {
+        name = "wagyourtail releases"
+        url = "https://maven.wagyourtail.xyz/releases"
+    }
+    maven {
+        name = "sponge"
+        url = "https://repo.spongepowered.org/maven"
+    }
+    maven {
+        name "GTNH Maven"
+        url "https://nexus.gtnewhorizons.com/repository/public/"
+        mavenContent {
+            includeGroup("com.gtnewhorizons")
+            includeGroupByRegex("com\\.gtnewhorizons\\..+")
+        }
+    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.ow2.asm:asm:9.8")
+    implementation("org.ow2.asm:asm-tree:9.8")
+    implementation("org.ow2.asm:asm-commons:9.8")
+    compileOnly("com.gtnewhorizons.retrofuturabootstrap:RetroFuturaBootstrap:1.0.11") { transitive = false }
+}
+
+sourceSets {
+    forge {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+unimined.minecraft {
+    version "1.7.10"
+    mappings {
+        searge()
+        mcp("stable", "12-1.7.10")
+    }
+}
+
+unimined.minecraft(sourceSets.forge) {
+    combineWith(sourceSets.main)
+
+    minecraftForge {
+        loader "10.13.4.1614-1.7.10"
+    }
+    defaultRemapJar = false
+}
+
+configurations {
+    mainImplementation
+    implementation.extendsFrom forgeImplementation
+
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.mainImplementation
+        runtimeClasspath += configurations.mainImplementation
+    }
+}
+
+jar {
+    doFirst {
+        manifest {
+            def attribute_map = [:]
+            attribute_map['TweakClass'] = 'gblodb.nonupdate.NonUpdateTweaker'
+            attributes(attribute_map)
+        }
+    }
+}
+
+processResources {
+    inputs.property 'mod_version', version
+
+    filesMatching("mcmod.info") {
+        expand 'mod_version': version
+    }
+}
